@@ -6,7 +6,7 @@ namespace Project.Model
     {
         int Id { get; set; }
 
-        IList<IGame> Games { get; set; }
+        ICollection<IGame> Games { get; set; }
 
         double TotalPrice { get; set; }
 

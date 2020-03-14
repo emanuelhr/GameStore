@@ -14,6 +14,6 @@ namespace Project.Model.Common
 
         string Headquarters { get; set; }
 
-        ICollection<IGame> Games { get; set; }
+        ICollection<IGame> Games { get;  set; }
     }
 }

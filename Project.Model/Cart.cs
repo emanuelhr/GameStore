@@ -10,7 +10,7 @@ namespace Project.Model
     {
         public int Id { get; set; }
 
-        public IList<IGame> Games { get; set; }
+        public ICollection<IGame> Games { get; set; }
 
         public double TotalPrice { get; set; }
 

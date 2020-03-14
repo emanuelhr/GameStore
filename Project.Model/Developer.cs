@@ -13,6 +13,6 @@ namespace Project.Model
         public string Name { get ; set ; }
         public string Headquarters { get ; set ; }
 
-        public ICollection<IGame> Games { get; set; }
+        public ICollection<IGame> Games { get;  set; }
     }
 }

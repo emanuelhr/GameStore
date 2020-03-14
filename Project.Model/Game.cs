@@ -14,7 +14,7 @@ namespace Project.Model
 
         public IDeveloper Developer { get; set; }
 
-        public DateTime ReleaseDate { get; set; }
+        public DateTime? ReleaseDate { get; set; }
 
         public ICollection<IGameGenre> Genre { get; set; }
 

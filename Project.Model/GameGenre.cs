@@ -13,5 +13,7 @@ namespace Project.Model
         public int Id { get; set; }
 
         public string Genre { get; set; }
+
+        public ICollection<IGame> Games { get; set; }
     }
 }
