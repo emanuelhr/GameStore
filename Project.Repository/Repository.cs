@@ -1,4 +1,6 @@
-﻿using Project.Repository.Common;
+﻿using Microsoft.EntityFrameworkCore;
+using Project.DAL;
+using Project.Repository.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,40 +12,43 @@ namespace Project.Repository
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
-               
-        public Repository()
-        {
 
+        protected readonly DbContext Context;
+        public Repository(DbContext context)
+        {
+            Context = context;
         }
+
         
+
         public void Add(TEntity entity)
         {
-            throw new NotImplementedException();
+            Context.Set<TEntity>().Add(entity);
         }
 
         public void Delete(TEntity entity)
         {
-            throw new NotImplementedException();
+            Context.Set<TEntity>().Remove(entity);
         }
 
         public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
         {
-            throw new NotImplementedException();
+           return Context.Set<TEntity>().Where(predicate);
         }
 
         public IEnumerable<TEntity> GetAll()
         {
-            throw new NotImplementedException();
+            return Context.Set<TEntity>().ToList();
         }
 
         public TEntity GetById(int id)
         {
-            throw new NotImplementedException();
+            return Context.Set<TEntity>().Find(id);
         }
 
         public void Update(TEntity entity)
         {
-            throw new NotImplementedException();
+            Context.Set<TEntity>().Update(entity);
         }
     }
 }

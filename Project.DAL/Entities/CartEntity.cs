@@ -12,7 +12,7 @@ namespace Project.DAL.Entities
         #region MyRegion
        public int Id { get; set; }
 
-       public ICollection<Game> Games { get; set; }
+       public ICollection<GameEntity> Games { get; set; }
 
        public double TotalPrice { get; set; }
 

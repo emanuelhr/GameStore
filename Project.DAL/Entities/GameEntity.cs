@@ -17,7 +17,9 @@ namespace Project.DAL.Entities
         public string Name { get; set; }
 
         [Required]
-        public Developer Developer { get; set; }
+        public DeveloperEntity Developer { get; set; }
+        
+        public int DeveloperId { get; set; }
 
         public DateTime? ReleaseDate { get; set; }
 

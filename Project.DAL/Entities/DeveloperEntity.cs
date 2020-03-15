@@ -15,7 +15,7 @@ namespace Project.DAL.Entities
         public string Name { get; set; }
         public string Headquarters { get; set; }
 
-        public ICollection<Game> Games { get; private set; }
+        public ICollection<GameEntity> Games { get; private set; }
 
         #endregion
 
