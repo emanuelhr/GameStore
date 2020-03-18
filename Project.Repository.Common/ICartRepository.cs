@@ -9,8 +9,8 @@ namespace Project.Repository.Common
 {
     public interface ICartRepository : IRepository<ICart>
     {
-        IEnumerable<ICart> GetAllCarts();
-        ICart GetCartById(int id);
+        Task<IEnumerable<ICart>> GetAllCartsAsync();
+        Task<ICart> GetCartByIdAsync(int id);
         
 
     }

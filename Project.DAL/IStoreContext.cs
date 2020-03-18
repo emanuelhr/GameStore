@@ -15,5 +15,7 @@ namespace Project.DAL
         DbSet<DeveloperEntity> Developers { get; set; }
         DbSet<GameEntity> Games { get; set; }
         DbSet<GameGenreEntity> Genres { get; set; }
+
+       
     }
 }

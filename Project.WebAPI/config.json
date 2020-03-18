@@ -1,0 +1,6 @@
+{
+	"ConnectionStrings": {
+
+		"DefaultConnection" :  "Data Source=DESKTOP-I4S93V3\\SQLEXPRESS;Initial Catalog=GameStore;Integrated Security=True"
+	}
+}

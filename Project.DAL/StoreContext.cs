@@ -6,6 +6,7 @@ using Project.DAL.EntityConfigurations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,7 +15,12 @@ namespace Project.DAL
     public class StoreContext : DbContext, IStoreContext
     {
 
-        public StoreContext()
+        //public StoreContext() : base()
+        //{
+        //    Database.EnsureCreated();
+        //}
+
+        public StoreContext(DbContextOptions<StoreContext> options) : base(options)
         {
             Database.EnsureCreated();
         }
@@ -31,6 +37,7 @@ namespace Project.DAL
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+                        
 
             modelBuilder.ApplyConfiguration(new CartEntityConfig());
             modelBuilder.ApplyConfiguration(new DeveloperEntityConfig());
@@ -58,12 +65,12 @@ namespace Project.DAL
         }
 
 
-        private string _connectionString = @"Data Source=DESKTOP-I4S93V3\SQLEXPRESS;Initial Catalog=GameStore;Integrated Security=True";
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-           
-            optionsBuilder.UseSqlServer(_connectionString);
-        }
+       // private string _connectionString = @"Data Source=DESKTOP-I4S93V3\SQLEXPRESS;Initial Catalog=GameStore;Integrated Security=True";
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+
+        //    //optionsBuilder.UseSqlServer(_connectionString);
+        //}
 
     }
     

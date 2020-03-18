@@ -21,34 +21,23 @@ namespace Project.Repository
 
         
 
-        public void Add(TEntity entity)
+    
+
+        public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            Context.Set<TEntity>().Add(entity);
+        return   await Task.Run(()=> Context.Set<TEntity>().Where(predicate)) ;
+            
         }
 
-        public void Delete(TEntity entity)
+        public async  Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            Context.Set<TEntity>().Remove(entity);
+            return await Context.Set<TEntity>().ToListAsync();
+        }
+        public async Task<TEntity> GetByIdAsync(int id)
+        {
+            return await Context.Set<TEntity>().FindAsync(id);
         }
 
-        public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
-        {
-           return Context.Set<TEntity>().Where(predicate);
-        }
-
-        public IEnumerable<TEntity> GetAll()
-        {
-            return Context.Set<TEntity>().ToList();
-        }
-
-        public TEntity GetById(int id)
-        {
-            return Context.Set<TEntity>().Find(id);
-        }
-
-        public void Update(TEntity entity)
-        {
-            Context.Set<TEntity>().Update(entity);
-        }
+       
     }
 }

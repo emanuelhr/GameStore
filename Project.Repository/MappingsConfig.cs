@@ -16,6 +16,9 @@ namespace Project.Repository
             CreateMap<CartEntity, Cart>().ReverseMap();
             CreateMap<CartEntity, ICart>().ReverseMap();
             CreateMap<ICart, Cart>().ReverseMap();
+            CreateMap<GameEntity, Game>().ReverseMap();
+            CreateMap<GameEntity, IGame>().ReverseMap();
+            CreateMap<IGame, Game>().ReverseMap();
         }   
     }
 }
