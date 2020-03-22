@@ -8,7 +8,7 @@ namespace Project.Model
 
         ICollection<IGame> Games { get; set; }
 
-        double TotalPrice { get; set; }
+        double TotalPrice { get; }
 
     }
 }

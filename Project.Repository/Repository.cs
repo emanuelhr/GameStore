@@ -13,29 +13,25 @@ namespace Project.Repository
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
 
-        protected readonly DbContext Context;
-        public Repository(DbContext context)
+        protected readonly IStoreContext _context;
+        public Repository(IStoreContext context)
         {
-            Context = context;
+            _context = context;
         }
-
-        
-
-    
 
         public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)
         {
-        return   await Task.Run(()=> Context.Set<TEntity>().Where(predicate)) ;
+        return   await Task.Run(()=> _context.Instance.Set<TEntity>().Where(predicate)) ;
             
         }
 
         public async  Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            return await Context.Set<TEntity>().ToListAsync();
+            return await _context.Instance.Set<TEntity>().ToListAsync();
         }
         public async Task<TEntity> GetByIdAsync(int id)
         {
-            return await Context.Set<TEntity>().FindAsync(id);
+            return await _context.Instance.Set<TEntity>().FindAsync(id);
         }
 
        

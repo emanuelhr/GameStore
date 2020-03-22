@@ -15,15 +15,14 @@ namespace Project.DAL
     public class StoreContext : DbContext, IStoreContext
     {
 
-        //public StoreContext() : base()
-        //{
-        //    Database.EnsureCreated();
-        //}
+        
 
         public StoreContext(DbContextOptions<StoreContext> options) : base(options)
         {
-            Database.EnsureCreated();
+           
+           // Database.EnsureCreated();
         }
+        public DbContext Instance => this;
 
         #region Entities
         public DbSet<CartEntity> Carts { get; set; }
@@ -31,35 +30,20 @@ namespace Project.DAL
         public DbSet<GameEntity> Games { get; set; }
         public DbSet<GameGenreEntity> Genres { get; set; }
 
+       
         #endregion
-        
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
                         
 
-            modelBuilder.ApplyConfiguration(new CartEntityConfig());
-            modelBuilder.ApplyConfiguration(new DeveloperEntityConfig());
+          //  modelBuilder.ApplyConfiguration(new CartEntityConfig());
+         //   modelBuilder.ApplyConfiguration(new DeveloperEntityConfig());
             modelBuilder.ApplyConfiguration(new GameGenreGameEntityConfig());
-            
-            #region GameEntity
-
-            modelBuilder.Entity<GameEntity>()
-                .Property(p => p.Name)
-                .HasColumnType("VARCHAR")
-                .HasMaxLength(20)
-                .IsRequired();            
-            modelBuilder.Entity<GameEntity>()
-                .Property(p => p.Price)
-                .HasColumnType("SMALLMONEY")
-                .IsRequired();
-            modelBuilder.Entity<GameEntity>()
-                .HasOne(p => p.Developer)
-                .WithMany(p => p.Games)
-                .HasForeignKey(p => p.DeveloperId)
-                .IsRequired();
-            #endregion
+            modelBuilder.ApplyConfiguration(new CartsGamesEntityConfig());
+            modelBuilder.ApplyConfiguration(new GameEntityConfig());        
                                  
             base.OnModelCreating(modelBuilder);
         }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Project.DAL
 {
-    public interface IStoreContext
+    public interface IStoreContext : IDbContext
     {
 
         DbSet<CartEntity> Carts { get; set; }

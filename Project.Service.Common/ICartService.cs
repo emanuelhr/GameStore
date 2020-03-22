@@ -8,5 +8,6 @@ namespace Project.Service
     {
         Task<int> CreateCart(ICart cart);
         Task<IEnumerable<ICart>> GetAllCarts();
+        Task<ICart> GetCartById(int id);
     }
 }

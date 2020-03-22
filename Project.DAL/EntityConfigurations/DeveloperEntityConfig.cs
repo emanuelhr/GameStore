@@ -14,13 +14,15 @@ namespace Project.DAL.EntityConfigurations
         public void Configure(EntityTypeBuilder<DeveloperEntity> builder)
         {
             builder.Property(d => d.Headquarters)
+                
+                .HasColumnType("varchar")
                 .HasMaxLength(50)
-                .HasColumnType("VARCHAR")
                 .IsRequired();
 
             builder.Property(d => d.Name)
+                
+                .HasColumnType("varchar")
                 .HasMaxLength(20)
-                .HasColumnType("VARCHAR")
                 .IsRequired();
         }
     }

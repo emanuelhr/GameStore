@@ -1,6 +1,7 @@
 ﻿using Project.Model;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,11 @@ namespace Project.DAL.Entities
 {
     public class GameGenreEntity
     {
+
+        public GameGenreEntity()
+        {
+            GameGenre = new Collection<GameGenreGameEntity>();
+        }
 
         #region Properties
         public int Id { get; set; }

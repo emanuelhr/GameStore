@@ -13,7 +13,7 @@ namespace Project.DAL.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<CartEntity> builder)
         {
-            builder.Property(p => p.TotalPrice).HasColumnType("SMALLMONEY");
+            builder.Property(p => p.TotalPrice).HasColumnType("smallmoney");
         }
     }
 }

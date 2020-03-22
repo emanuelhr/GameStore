@@ -14,21 +14,40 @@ namespace Project.Repository
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly StoreContext _context;
-       
+        //protected IStoreContext _context;
+        protected IStoreContext _context;
+        private readonly IMapper _mapper;
 
-        public UnitOfWork(StoreContext context)
+        public UnitOfWork(IStoreContext context,IMapper mapper)
         {
+            if (context ==null)
+            {
+                throw new ArgumentNullException("DbContext");
+            }
             _context = context;
-            
+            _mapper = mapper;
+            Developers = new DeveloperRepository(_context, _mapper);
+            Carts = new CartRepository(_context, _mapper);
         }
 
+        public IDeveloperRepository Developers { get; set; }
+        public ICartRepository Carts { get; set; }
 
         public virtual  Task<int> AddAsync<TEntity>(TEntity entity) where TEntity : class
         {
+            
             try
             {
-                 _context.AddAsync(entity);
+                var entry = _context.Instance.Entry(entity);
+                if (entry.State != EntityState.Detached)
+                {
+                    entry.State = EntityState.Added;
+                }
+                else
+                {
+                    _context.Instance.Set<TEntity>().Add(entity);
+                }
+               
             }
             catch (Exception e)
             {
@@ -43,7 +62,7 @@ namespace Project.Repository
             int result = 0;
             using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                result = await _context.SaveChangesAsync();
+                result = await _context.Instance.SaveChangesAsync();
                 scope.Complete();
             
             }
@@ -56,7 +75,18 @@ namespace Project.Repository
         {
             try
             {
-                _context.Remove(entity);
+                var entry = _context.Instance.Entry(entity);
+                if (entry.State!=EntityState.Deleted)
+                {
+                    entry.State= EntityState.Deleted;
+                }
+                else
+                {
+                    _context.Instance.Set<TEntity>().Attach(entity);
+                    _context.Instance.Set<TEntity>().Remove(entity);
+                }
+
+               // _context.Instance.Remove(entity);
                 return Task.FromResult(1);                
 
             }
@@ -69,7 +99,8 @@ namespace Project.Repository
 
         public Task<int> DeleteAsync<TEntity>(int id) where TEntity : class
         {
-            var entity = _context.Set<TEntity>().Find(id);
+
+            var entity = _context.Instance.Set<TEntity>().Find(id);
             if (entity==null)
             {
                 return Task.FromResult(0);
@@ -86,7 +117,13 @@ namespace Project.Repository
         {
             try
             {
-                _context.Entry(entity).State = EntityState.Modified;
+                var entry = _context.Instance.Entry(entity);
+                if (entry.State == EntityState.Detached)
+                {
+                    _context.Instance.Set<TEntity>().Attach(entity);
+                }
+
+                _context.Instance.Entry(entity).State = EntityState.Modified;
                 return Task.FromResult(1);
             }
             catch (Exception e)
@@ -94,6 +131,8 @@ namespace Project.Repository
 
                 throw e;
             }
+
+
         }
     }
 }

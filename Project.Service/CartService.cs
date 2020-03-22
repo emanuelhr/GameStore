@@ -1,4 +1,6 @@
-﻿using Project.Model;
+﻿using AutoMapper;
+using Project.DAL.Entities;
+using Project.Model;
 using Project.Repository.Common;
 using System;
 using System.Collections.Generic;
@@ -12,27 +14,48 @@ namespace Project.Service
     {
         private readonly ICartRepository _repository;
         private readonly IUnitOfWork _uow;
+        private readonly IMapper _mapper;
 
-        public CartService(ICartRepository repository, IUnitOfWork uow)
+        public CartService(ICartRepository repository, IUnitOfWork uow, IMapper mapper)
         {
             _repository = repository;
             _uow = uow;
+            _mapper = mapper;
         }
 
 
-        public async Task<int> CreateCart(ICart cart)
+        public  Task<int> CreateCart(ICart cart)
         {
-          await  _uow.AddAsync(cart);
-          return  await _uow.CommitAsync();
+
+            #region UOW
+            var cartmodel = _mapper.Map<ICart, Cart>(cart);
             
+            _uow.AddAsync(_mapper.Map<Cart, CartEntity>(cartmodel));
+            _uow.CommitAsync();
+            return Task.FromResult(1);
+            #endregion
+
+            #region MyRegion
+            //var cartmodel = _mapper.Map<ICart, Cart>(cart);
+            
+            //_uow.AddAsync(_mapper.Map<Cart, CartEntity>(cartmodel));
+            #endregion
+
         }
 
-        public async Task<IEnumerable<ICart>> GetAllCarts()
+        public  Task<IEnumerable<ICart>> GetAllCarts()
         {
-            return await _repository.GetAllCartsAsync();
+            return  _repository.GetAllCartsAsync();
 
 
         }
+
+        public Task<ICart> GetCartById(int id)
+        {
+
+            return _repository.GetCartByIdAsync(id);
+        }
+
 
         
 

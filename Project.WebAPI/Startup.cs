@@ -14,6 +14,9 @@ using Microsoft.Extensions.Logging;
 using Autofac.Extensions.DependencyInjection;
 using Project.DAL;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
+using System.Reflection;
+using Newtonsoft;
 
 namespace Project.WebAPI
 {
@@ -31,10 +34,16 @@ namespace Project.WebAPI
         {
             services.AddDbContext<StoreContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),b=>b.MigrationsAssembly("Project.DAL"));
+                options.EnableSensitiveDataLogging();
+                
+                
             });
+            services.AddAutoMapper(cfg=>cfg.AddProfile(new Project.Repository.MappingsConfig()),Assembly.GetExecutingAssembly());
+            
             services.AddAutofac();
-            services.AddControllers();
+            
+            services.AddControllers().AddNewtonsoftJson(options=>options.SerializerSettings.ReferenceLoopHandling=Newtonsoft.Json.ReferenceLoopHandling.Ignore);
         }
 
         //Autofac configuration
@@ -43,6 +52,7 @@ namespace Project.WebAPI
             // Register your own things directly with Autofac, like:
             builder.RegisterModule(new Project.Repository.DIModule()) ;
             builder.RegisterModule(new Project.Service.DIModule());
+            builder.RegisterType<DatabaseSeeder>().AsSelf();
         }
 
 

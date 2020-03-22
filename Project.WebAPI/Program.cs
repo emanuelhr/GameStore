@@ -8,6 +8,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
+using Project.DAL;
 
 namespace Project.WebAPI
 {
@@ -15,8 +17,22 @@ namespace Project.WebAPI
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            var host = CreateHostBuilder(args).Build();
+            InitialiseDatabase(host);
+            
+            host.Run();
         }
+        private static void InitialiseDatabase(IHost host)
+        {
+            var scopeFactory = host.Services.GetService<IServiceScopeFactory>();
+
+            using (var scope = scopeFactory.CreateScope())
+            {
+                var initializer = scope.ServiceProvider.GetService<DatabaseSeeder>();
+                initializer.InitaliseSeeder();
+            }
+        }
+
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)

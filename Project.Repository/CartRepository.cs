@@ -15,25 +15,27 @@ namespace Project.Repository
     public class CartRepository : Repository<ICart>, ICartRepository
     {
        
-        private readonly StoreContext _context;
+       // private readonly IStoreContext _context;
         private readonly IMapper _mapper;
 
-        public CartRepository(StoreContext context, IMapper mapper ) : base(context)
+        public CartRepository(IStoreContext context, IMapper mapper ) : base( context)
         {
-            _context = context;
+         //   _context = context;
             _mapper = mapper;
         }
 
 
         public async Task<IEnumerable<ICart>> GetAllCartsAsync()
         {
-            return await Task.Run(()=> new List<ICart>(_mapper.Map<List<Cart>>(_context.Carts.Include(p => p.Games)).ToList()).AsEnumerable()) ;
+            return await Task.Run(()=> new List<ICart>(_mapper.Map<List<Cart>>(_context.Carts.Include(p => p.CartsGames)).ToList()).AsEnumerable()) ;
         
         }
 
         public async  Task<ICart> GetCartByIdAsync(int id)
         {
-            return  _mapper.Map<Cart>(await _context.Carts.FindAsync(id));
+            var entity = await _context.Carts.FindAsync(id);
+            _context.Instance.Entry(entity).State = EntityState.Detached;
+            return  _mapper.Map<Cart>(entity);
         }
 
        

@@ -10,8 +10,8 @@ using Project.DAL;
 namespace Project.DAL.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20200315153638_IntitialCreation")]
-    partial class IntitialCreation
+    [Migration("20200321171602_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,12 +28,27 @@ namespace Project.DAL.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<decimal>("TotalPrice")
-                        .HasColumnType("SMALLMONEY");
+                    b.Property<double>("TotalPrice")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
                     b.ToTable("Carts");
+                });
+
+            modelBuilder.Entity("Project.DAL.Entities.CartsGamesEntity", b =>
+                {
+                    b.Property<int>("CartEntityId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GameEntityId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CartEntityId", "GameEntityId");
+
+                    b.HasIndex("GameEntityId");
+
+                    b.ToTable("CartsGamesEntity");
                 });
 
             modelBuilder.Entity("Project.DAL.Entities.DeveloperEntity", b =>
@@ -45,12 +60,12 @@ namespace Project.DAL.Migrations
 
                     b.Property<string>("Headquarters")
                         .IsRequired()
-                        .HasColumnType("VARCHAR")
+                        .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("VARCHAR")
+                        .HasColumnType("nvarchar(20)")
                         .HasMaxLength(20);
 
                     b.HasKey("Id");
@@ -65,26 +80,21 @@ namespace Project.DAL.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CartEntityId")
-                        .HasColumnType("int");
-
                     b.Property<int>("DeveloperId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("VARCHAR")
+                        .HasColumnType("nvarchar(20)")
                         .HasMaxLength(20);
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("SMALLMONEY");
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
                     b.Property<DateTime?>("ReleaseDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CartEntityId");
 
                     b.HasIndex("DeveloperId");
 
@@ -123,12 +133,23 @@ namespace Project.DAL.Migrations
                     b.ToTable("GameGenreGameEntity");
                 });
 
+            modelBuilder.Entity("Project.DAL.Entities.CartsGamesEntity", b =>
+                {
+                    b.HasOne("Project.DAL.Entities.GameEntity", "GameEntity")
+                        .WithMany("CartsGames")
+                        .HasForeignKey("CartEntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Project.DAL.Entities.CartEntity", "CartEntity")
+                        .WithMany("CartsGames")
+                        .HasForeignKey("GameEntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Project.DAL.Entities.GameEntity", b =>
                 {
-                    b.HasOne("Project.DAL.Entities.CartEntity", null)
-                        .WithMany("Games")
-                        .HasForeignKey("CartEntityId");
-
                     b.HasOne("Project.DAL.Entities.DeveloperEntity", "Developer")
                         .WithMany("Games")
                         .HasForeignKey("DeveloperId")

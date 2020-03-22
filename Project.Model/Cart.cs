@@ -12,7 +12,24 @@ namespace Project.Model
 
         public ICollection<IGame> Games { get; set; }
 
-        public double TotalPrice { get; set; }
+        public double TotalPrice {
+
+
+            get
+            {
+
+               double price = 0;
+
+                foreach (var game in Games)
+                {
+                    price += game.Price;
+
+                }
+                return price;
+            
+            }
+            
+        }
 
     }
 }

@@ -2,6 +2,7 @@
 using Project.Model.Common;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -11,9 +12,21 @@ namespace Project.DAL.Entities
 {
     public class GameEntity
     {
+
+        public GameEntity()
+        {
+            GameGenre = new Collection<GameGenreGameEntity>();
+            CartsGames = new Collection<CartsGamesEntity>();
+        }
+
+
         #region Properties
 
         public int Id { get; set; }
+
+        [Required]
+        [DataType("varchar")]
+        [MaxLength(20)]
         public string Name { get; set; }
 
         [Required]
@@ -27,8 +40,10 @@ namespace Project.DAL.Entities
 
         public ICollection<GameGenreGameEntity> GameGenre { get; set; }
         [Required]
+        [DataType("smallmoney")]
         public double Price { get; set; }
 
+        public ICollection<CartsGamesEntity> CartsGames { get; set; }
         #endregion
 
         public override string ToString()
