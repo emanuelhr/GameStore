@@ -23,43 +23,110 @@ namespace Project.WebAPI.Controllers
             _service = service;
             _logger = logger;
         }
-        // GET: api/Developer
+        // GET: api/developer
         
         [HttpGet]
-        public async Task<IEnumerable<IDeveloper>> Get()
+        public async Task<ActionResult<IEnumerable<IDeveloper>>> Get()
         {
-            return  await _service.GetDevelopers();
-        }
-
-        // GET: api/Developer/5
-        [HttpGet("{id}", Name = "Get_developer")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST: api/Developer
-        [HttpPost]
-        public async Task Post([FromBody] Developer developer)
-        {
+            try
+            {
+                return Ok(await _service.GetDevelopers());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Failed to retrieve developers : {ex}");
+                return BadRequest("Failed to retrieve Developers");
+            }
             
+        }
 
-            await   _service.CreateDeveloper(developer);
+        // GET: api/developer/5
+        [HttpGet("{id}", Name = "Get_developer")]
+        public async Task<ActionResult<IDeveloper>> Get(int id)
+        {
+            try
+            {
+                return Ok(await _service.GetDeveloperById(id));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Failed to retrieve developer : {ex}");
+                
+            }
+            return BadRequest("Failed to retrieve Developer");
 
         }
 
-        // PUT: api/Developer/5
+        // POST: api/developer/
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] Developer developer)
+        {
+            try
+            {
+
+                if (await _service.CreateDeveloper(developer)==1)
+                {
+                   var createdDeveloper=await _service.GetLastDeveloperAsync();
+                    return Created("api/Developer", createdDeveloper);
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Failed to create developer : {ex}");
+              
+            }
+            return BadRequest("Failed to create Developer");
+
+        }
+
+        // PUT: api/developer/5
         [HttpPut("{id}")]
-        public async Task Put(int id, [FromBody] Developer developer)
+        public async Task<IActionResult> Put(int id, [FromBody] Developer developer)
         {
-            await _service.UpdateDeveloper(id, developer);
+
+            try
+            {
+                if (await _service.GetDeveloperById(id)==null)
+                {
+                    return NotFound("Developer not found");
+                }
+
+               return Ok ( await _service.UpdateDeveloper(id, developer));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Failed to update developer : {ex}");
+
+            }
+            return BadRequest("Failed to update Developer");
+
 
         }
 
-        // DELETE: api/ApiWithActions/5
+        // DELETE: api/developer/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+
+            try
+            {
+                if (!await _service.DeveloperExists(id))
+                {
+                    return NotFound("Developer doesn't exist");
+                }
+                await _service.DeleteDeveloperAsync(id);
+                return Ok("Successfully deleted developer");
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError($"Failed to Delete deveoper {ex}");
+            }
+            return NotFound("Developer doesn't exist");
+           
+
+           
         }
     }
 }

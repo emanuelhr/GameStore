@@ -20,5 +20,7 @@ namespace Project.Repository.Common
 
         IDeveloperRepository Developers { get; set; }
         ICartRepository Carts { get; set; }
+
+        IGameGenreRepository Genres { get; set; }
     }
 }

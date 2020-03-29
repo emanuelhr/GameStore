@@ -23,17 +23,36 @@ namespace Project.Repository
          //   _context = context;
             _mapper = mapper;
         }
+
+        public Task<bool> DeveloperExist(int id)
+        {
+            if (_context.Developers.Find(id)==null)
+            {
+                return Task.FromResult(false);
+            }
+            return Task.FromResult(true);
+        }
+
         public async Task<IEnumerable<IDeveloper>> GetAllDevelopers(bool games = true)
         {
-           return await  Task.Run(()=> _mapper.Map<List<Developer>>(_context.Developers.Include(x => x.Games)).ToList().AsEnumerable());
+            var entity=await  _context.Developers.Include(x => x.Games).ToListAsync();
+           return  _mapper.Map<IEnumerable<DeveloperEntity>,IEnumerable<Developer>>(entity.AsEnumerable());
         }
 
         public async Task<IDeveloper> GetDeveloperById( int id,bool games = true)
         {
-          var entity= _context.Developers.Find(id);
+          var entity=await _context.Developers.FindAsync(id);
+         
             _context.Instance.Entry(entity).State = EntityState.Detached;
-                return await Task.Run(() => _mapper.Map<DeveloperEntity, IDeveloper>(entity));
+                return _mapper.Map<DeveloperEntity, Developer>(entity);
            
+        }
+
+        public async Task<IDeveloper> GetLastDeveloperAsync()
+        {
+            var lastDeveloperId = await _context.Developers.MaxAsync(i => i.Id);
+            var developer = await _context.Developers.FirstOrDefaultAsync(x=>x.Id==lastDeveloperId);
+            return _mapper.Map< DeveloperEntity, Developer > (developer);
         }
     }
 }

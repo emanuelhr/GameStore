@@ -28,18 +28,13 @@ namespace Project.Service
         {
 
             #region UOW
-            var cartmodel = _mapper.Map<ICart, Cart>(cart);
-            
+            var cartmodel = _mapper.Map<ICart, Cart>(cart);            
             _uow.AddAsync(_mapper.Map<Cart, CartEntity>(cartmodel));
             _uow.CommitAsync();
             return Task.FromResult(1);
             #endregion
 
-            #region MyRegion
-            //var cartmodel = _mapper.Map<ICart, Cart>(cart);
-            
-            //_uow.AddAsync(_mapper.Map<Cart, CartEntity>(cartmodel));
-            #endregion
+         
 
         }
 

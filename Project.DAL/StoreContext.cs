@@ -48,12 +48,15 @@ namespace Project.DAL
             base.OnModelCreating(modelBuilder);
         }
 
-
-       // private string _connectionString = @"Data Source=DESKTOP-I4S93V3\SQLEXPRESS;Initial Catalog=GameStore;Integrated Security=True";
+        //for mocking
+        //private string _connectionString = @"Data Source=DESKTOP-I4S93V3\SQLEXPRESS;Initial Catalog=GameStore;Integrated Security=True";
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
-
-        //    //optionsBuilder.UseSqlServer(_connectionString);
+        //    if (!optionsBuilder.IsConfigured)
+        //    {
+        //        optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=EFProviders.InMemory;Trusted_Connection=True;ConnectRetryCount=0");
+        //    }
+            
         //}
 
     }

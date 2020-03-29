@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Project.DAL.Entities;
 
 namespace Project.Repository
 {
@@ -35,7 +36,7 @@ namespace Project.Repository
         {
             var entity = await _context.Carts.FindAsync(id);
             _context.Instance.Entry(entity).State = EntityState.Detached;
-            return  _mapper.Map<Cart>(entity);
+            return  _mapper.Map<CartEntity,Cart>(entity);
         }
 
        

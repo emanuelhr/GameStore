@@ -16,5 +16,10 @@ namespace Project.Service.Common
         Task<IDeveloper> GetDeveloperById(int id, bool includeGames = true);
 
         Task<int> UpdateDeveloper(int id, IDeveloper developer);
+
+       Task<IDeveloper> GetLastDeveloperAsync();
+        Task<int> DeleteDeveloperAsync(int id);
+
+        Task<bool> DeveloperExists(int id);
     }
 }

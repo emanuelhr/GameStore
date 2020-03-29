@@ -28,10 +28,13 @@ namespace Project.Repository
             _mapper = mapper;
             Developers = new DeveloperRepository(_context, _mapper);
             Carts = new CartRepository(_context, _mapper);
+            Genres = new GameGenreRepository(_context, _mapper);
         }
 
         public IDeveloperRepository Developers { get; set; }
         public ICartRepository Carts { get; set; }
+
+        public IGameGenreRepository Genres { get; set; }
 
         public virtual  Task<int> AddAsync<TEntity>(TEntity entity) where TEntity : class
         {

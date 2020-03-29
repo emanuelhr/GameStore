@@ -17,7 +17,7 @@ namespace Project.DAL
         }
 
 
-      public void InitaliseSeeder()
+        public void InitaliseSeeder()
 
         {
 
@@ -50,12 +50,13 @@ namespace Project.DAL
             gameGenres.Add(new GameGenreEntity() { Genre = "Adventure" });
             gameGenres.Add(new GameGenreEntity() { Genre = "RPG" });
             gameGenres.Add(new GameGenreEntity() { Genre = "Sports" });
-
+            
 
 
             var games = new List<GameEntity>();
             games.Add(new GameEntity() { Name = "Final Fantasy", Developer = developers[0], Price = 20, ReleaseDate = DateTime.Now });
             games.Add(new GameEntity() { Name = "Final Fantasy 15", Developer = developers[1], Price = 15, ReleaseDate = DateTime.Now });
+            
 
 
             foreach (var developer in developers)

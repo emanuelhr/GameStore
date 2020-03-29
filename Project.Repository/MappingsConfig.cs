@@ -16,14 +16,11 @@ namespace Project.Repository
         {
 
            
-            CreateMap<CartEntity, Cart>()
-              // .IncludeMembers(entity=>entity.CartsGames)
-                .ForMember(model => model.Games, opt => opt.MapFrom(entity => entity.CartsGames.Select(y => y.GameEntity).ToList()));
+            CreateMap<CartEntity, Cart>()             
+                .ForMember(model => model.Games, opt => opt.MapFrom(entity => entity.CartsGames));
 
-            CreateMap<Cart, CartEntity>()
-              // .IncludeMembers(model=>model.Games)
-                .ForMember(model => model.CartsGames, opt => opt.MapFrom(entity => entity.Games))                
-                ;
+            CreateMap<Cart, CartEntity>()            
+                .ForMember(model => model.CartsGames, opt => opt.MapFrom(entity => entity.Games));
 
             CreateMap<GameEntity, IGame>().ReverseMap();
             CreateMap<DeveloperEntity, IDeveloper>().ReverseMap();
@@ -37,32 +34,30 @@ namespace Project.Repository
             CreateMap<CartsGamesEntity, Cart>()
                 .ForMember(model => model.Games, opt => opt.MapFrom(entity => entity.GameEntity)).ReverseMap();
 
-
-
-
-
-            //CreateMap<CartsGamesEntity, Game>()
-            //    .ForMember(model => model, opt => opt.MapFrom(entity => entity.GameEntity));
-
-
             CreateMap<Game, CartsGamesEntity>()
                 
                 .ForMember(entity => entity.GameEntity, opt => opt.MapFrom(model => model));
 
-
             CreateMap<GameEntity, Game>()
                 
-                .ForMember(model => model.Genre, opt => opt.MapFrom(entity => entity.GameGenre.Select(y => y.GameGenreEntity).ToList()));
+                .ForMember(model => model.Genre, opt => opt.MapFrom(entity => entity.GameGenre));
 
             CreateMap<Game, GameEntity>()
                 
                 .ForMember(entity => entity.GameGenre, opt => opt.MapFrom(model => model.Genre));
 
-            CreateMap<GameGenreEntity, GameGenre>();
+
+            CreateMap<GameGenreEntity, GameGenre>()
+                .ForMember(model=>model.Games, opt=>opt.MapFrom(entity=>entity.GameGenre));
 
             CreateMap<GameGenre, GameGenreEntity>()
-                .ForMember(entity => entity.GameGenre, opt => opt.MapFrom(model => model));
+                .ForMember(entity => entity.GameGenre, opt => opt.MapFrom(model => model.Games));
 
+            CreateMap<IGame, GameGenreGameEntity>()
+                .ForMember(entity=>entity.GameEntity, opt=>opt.MapFrom(model=>model)).ReverseMap();
+
+            CreateMap<GameGenreGameEntity, GameGenre>()
+                .ForMember(model => model.Games, opt => opt.MapFrom(entity => entity.GameEntity));
 
 
             CreateMap<IGameGenre, GameGenre>().ReverseMap();

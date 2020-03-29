@@ -14,5 +14,8 @@ namespace Project.Repository.Common
         Task<IEnumerable<IDeveloper>> GetAllDevelopers(bool games=true);
         Task<IDeveloper> GetDeveloperById(int id,bool games = true);
 
+        Task<IDeveloper> GetLastDeveloperAsync();
+
+        Task<bool> DeveloperExist(int id);
     }
 }

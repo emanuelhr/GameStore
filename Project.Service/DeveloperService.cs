@@ -14,13 +14,13 @@ namespace Project.Service
 {
     public class DeveloperService : IDeveloperService
     {
-        private readonly IDeveloperRepository _repository;
+       // private readonly IDeveloperRepository _repository;
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
 
-        public DeveloperService(IDeveloperRepository repository, IUnitOfWork uow, IMapper mapper)
+        public DeveloperService( IUnitOfWork uow, IMapper mapper)
         {
-            _repository = repository;
+           // _repository = repository;
             _uow = uow;
             _mapper = mapper;
         }
@@ -32,12 +32,12 @@ namespace Project.Service
         }
         public Task<IEnumerable<IDeveloper>> GetDevelopers(bool includeGames = true)
         {
-            return _repository.GetAllDevelopers();
+            return _uow.Developers.GetAllDevelopers();
         }
 
         public Task<IDeveloper> GetDeveloperById(int id, bool includeGames = true)
         {
-            throw new NotImplementedException();
+            return _uow.Developers.GetDeveloperById(id);
         }
 
         public async Task<int> UpdateDeveloper(int id, IDeveloper developer)
@@ -51,6 +51,23 @@ namespace Project.Service
             }
 
            return  await  Task.FromResult(0);
+        }
+
+        public Task<IDeveloper> GetLastDeveloperAsync()
+        {
+            return _uow.Developers.GetLastDeveloperAsync();
+        }
+
+        public Task<int> DeleteDeveloperAsync(int id)
+        {
+              _uow.DeleteAsync<DeveloperEntity>(id);
+            return _uow.CommitAsync();
+
+        }
+
+        public Task<bool> DeveloperExists(int id)
+        {
+           return  _uow.Developers.DeveloperExist(id);
         }
     }
       

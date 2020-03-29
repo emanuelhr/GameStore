@@ -16,6 +16,7 @@ namespace Project.Service
         {
             builder.RegisterType<CartService>().As<ICartService>();
             builder.RegisterType<DeveloperService>().As<IDeveloperService>();
+            builder.RegisterType<GameGenreService>().As<IGameGenreService>();
         }
     }
 }

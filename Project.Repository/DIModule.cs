@@ -21,8 +21,10 @@ namespace Project.Repository
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
             builder.RegisterType<StoreContext>().As<IStoreContext>().InstancePerLifetimeScope() ;
             builder.RegisterType<DeveloperRepository>().As<IDeveloperRepository>();
+            builder.RegisterType<GameGenreRepository>().As<IGameGenreRepository>();
 
             builder.RegisterType<Developer>().As<IDeveloper>();
+            
            // builder.RegisterType<Repository<ICart>
            
         }

@@ -1,4 +1,5 @@
-﻿using Project.Model.Common;
+﻿using Project.DAL.Entities;
+using Project.Model.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,11 +8,13 @@ using System.Threading.Tasks;
 
 namespace Project.Repository.Common
 {
-    public interface IGameGenreRepository : IRepository<IGameGenre>
+    public interface IGameGenreRepository : IRepository<GameGenreEntity>
     {
 
-        IEnumerable<IGameGenre> GetAllGenres(bool games = true);
-        IGameGenre GetGenreById(int id);
+        Task<IEnumerable<IGameGenre>> GetAllGenres(bool games = true);
+        Task<IGameGenre> GetGenreById(int id);
+
+        Task<IGameGenre> GetLastGenreAsync();
         
     }
 }
